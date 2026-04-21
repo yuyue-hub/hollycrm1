@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalCX - 出海客服系统</title>
+    <style>
+        /* CSS Variables & Reset */
+        :root {
+            --primary: #3B82F6;
+            --primary-dark: #2563EB;
+            --text-main: #0F172A;
+            --text-sub: #64748B;
+            --bg-app: #F8FAFC;
+            --card-bg: #FFFFFF;
+            --border: #E2E8F0;
+            --accent-green: #22C55E;
+            --accent-orange: #F97316;
+            --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-serif: 'Playfair Display', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+            max-width: 56rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .magazine-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .magazine-title { font-size: 4rem; }
+        }
+
+        /* Layout */
+        .container {
+            max-width: 80rem;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-py {
+            padding: 6rem 0;
+        }
+
+        /* Navbar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5rem;
+            z-index: 1000;
+            background-color: #ffffff;
+            border-bottom: 1px solid var(--border);
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+        }
+
+        nav.scrolled {
+            background-color: #ffffff;
+            backdrop-filter: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: none;
+            gap: 2.5rem;
+            align-items: center;
+            font-size: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links { display: flex; }
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: none;
+            letter-spacing: normal;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fc354c;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: none;
+            letter-spacing: normal;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, #fc354c 0%, #ff7b54 100%);
+            color: white;
+            border-radius: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(252, 53, 60, 0.3);
+        }
+
+        .btn-outline {
+            border: 2px solid #fc354c;
+            color: #fc354c;
+            background: transparent;
+            border-radius: 0.5rem;
+        }
+
+        .btn-outline:hover {
+            background: linear-gradient(90deg, #fc354c 0%, #ff7b54 100%);
+            color: white;
+        }
+
+        /* Hero */
+        .hero {
+            padding-top: 8rem;
+            padding-bottom: 4rem;
+            min-height: 550px;
+            background: url('img/banner.jpg') center/cover no-repeat;
+            position: relative;
+            margin-top: 5rem;
+        }
+
+
+
+
+
+        .hero-grid {
+            display: grid;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .hero-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .hero-image {
+            aspect-ratio: 16 / 9;
+            background-color: #F1F5F9;
+            border-radius: 1.5rem;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+        }
+
+        /* Cards */
+        .magazine-card {
+            background-color: white;
+            padding: 3rem;
+            border: 1px solid var(--border);
+            border-radius: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .grid-2 {
+            display: grid;
+            gap: 2rem;
+            grid-template-columns: 1fr;
+        }
+
+        @media (min-width: 768px) {
+            .grid-2 { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* Case Study Section */
+        #case-study-container {
+            position: relative;
+            min-height: 600px;
+        }
+
+        .case-slide {
+            display: none;
+            background: white;
+            padding: 4rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-slide.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .case-grid {
+            display: grid;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 1024px) {
+            .case-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .case-image {
+            aspect-ratio: 4/3;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .case-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .metric-value {
+            font-family: var(--font-serif);
+            font-size: 2.5rem;
+            font-style: italic;
+            color: var(--primary);
+        }
+
+        .metric-label {
+            font-size: 0.625rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 0.5rem;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3rem;
+            height: 3rem;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+
+        .carousel-btn:hover { background: white; }
+        .carousel-prev { left: 1rem; }
+        .carousel-next { right: 1rem; }
+
+        .dots {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .dot {
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 50%;
+            background: #CBD5E1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            width: 2rem;
+            background: var(--primary);
+            border-radius: 1rem;
+        }
+
+        /* Compliance Grid */
+        .compliance-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .compliance-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .compliance-card {
+            padding: 2rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .check-icon {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 0.5rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+            background: white;
+        }
+
+        .footer-content {
+            max-width: 80rem;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .footer-content { flex-direction: row; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="container nav-content">
+            <a class="logo" href="#"><img src="img/logo.jpg" alt="GlobalCX" style="height: 2rem; width: auto;"></a>
+            <div class="nav-links">
+                <a href="#" class="nav-link">首页</a>
+                <a href="#" class="nav-link">产品</a>
+                <a href="#" class="nav-link">解决方案</a>
+                <a href="#" class="nav-link">客户案例</a>
+                <a href="#" class="nav-link">资源中心</a>
+                <a href="#" class="nav-link">关于我们</a>
+                <div style="display: flex; align-items: center; gap: 1rem; font-size: 16px; color: var(--text-main);">
+                    <span style="display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="18" height="18" fill="#fc354c" stroke="none" viewBox="0 0 24 24">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        免费咨询: 4006-816-505
+                    </span>
+                    <button class="btn btn-primary" style="padding: 0.5rem 1.5rem;">免费试用</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-text" style="max-width: 500px; margin-left: auto;">
+                <span class="section-label" style="background: rgba(252, 53, 60, 0.1); color: #fc354c; border: none; padding: 0.5rem 1rem; border-radius: 2rem;">出海客服系统</span>
+                <h1 class="magazine-title" style="font-size: 2.5rem; margin-top: 1rem;">出海客服系统</h1>
+                <p style="font-size: 1rem; color: var(--text-sub); margin-bottom: 2.5rem; line-height: 1.6;">
+                    为企业全球业务提供AI驱动的客服系统平台，帮助出海企业构建支撑全球业务增长的高效服务体系。
+                </p>
+                <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                    <a href="#" class="btn btn-primary" style="padding: 0.5rem 1.5rem; font-size: 16px; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                        抢先体验
+                    </a>
+                    <a href="#" class="btn btn-outline" style="padding: 0.5rem 1.5rem; font-size: 16px; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        联系客服
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <section id="核心价值" class="section-py bg-white">
+        <div class="container" style="text-align: center; margin-bottom: 5rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">在一个工作台里 统一接待全球客户咨询</h2>
+            <p style="color: var(--text-sub); font-size: 1.125rem;">一个工作台管理全球客户咨询</p>
+        </div>
+        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; padding: 3rem; background: #F4F8FD; border: 1px solid #dbeafe; border-radius: 1.5rem;">
+            <div style="max-width: 500px;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="width: 3rem; height: 3rem; background: rgba(252, 53, 60, 0.1); display: flex; align-items: center; justify-content: center; border-radius: 0.75rem; color: #fc354c;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path></svg>
+                    </div>
+                    <h3 style="font-size: 1.5rem;">海外社交媒体多账号聚合管理</h3>
+                </div>
+                <p style="color: var(--text-sub); margin-bottom: 2rem; line-height: 1.6;">
+                    坐席在一个工作台响应全球各地的各类业务支持，支持邮件、WhatsApp, Facebook, Line, Twitter, Instagram 及 Shopify等海外社交媒体的接入，消息入口、聊天记录、客户画像一目了然。
+                </p>
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="width: 3rem; height: 3rem; background: rgba(252, 53, 60, 0.1); display: flex; align-items: center; justify-content: center; border-radius: 0.75rem; color: #fc354c;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 3l4 4L7 11V3zm14 0l-4 4 2 4V3zM2 12h20M7 21v-4M17 21v-4M9 21h6"></path></svg>
+                    </div>
+                    <h3 style="font-size: 1.5rem;">全球多语言沟通覆盖</h3>
+                </div>
+                <p style="color: var(--text-sub); margin-bottom: 2rem; line-height: 1.6;">
+                    覆盖全球几十种主流语言，客服只需输入本地语言回复，系统即刻将其转换为访客语言，降低沟通成本。
+                </p>
+            </div>
+            <div style="border-radius: 1.5rem; overflow: hidden;">
+                <img src="img/1.png" alt="系统界面" style="width: 100%; height: auto; display: block;">
+            </div>
+        </div>
+    </section>
+    <style>
+        .magazine-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+
+    <section id="数字员工" class="section-py" style="background: #F9FAFB;">
+        <div class="container" style="text-align: center; margin-bottom: 5rem; max-width: 1200px; margin: 0 auto; padding: 4rem 2rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1.5rem; color: #111827;">LLMs驱动的24/7数字员工 精准应对跨国服务诉求</h2>
+            <p style="color: #6B7280; font-size: 1.125rem; max-width: 48rem; margin: 0 auto;">
+                只需维护一套知识库，AI Agent即可自动适配全球语种，覆盖语音+在线，实现地道的本地化服务与业务自动化。
+            </p>
+        </div>
+        <div class="container" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; padding: 0 2rem;">
+            <div style="background: #FFFFFF; border-radius: 1rem; padding: 2.5rem; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); width: 599px; height: 620px;">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2.5rem;">
+                    <div style="width: 3rem; height: 3rem; background: var(--text-main); border-radius: 1rem; display: flex; align-items: center; justify-content: center; color: white;">
+                          <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                      </div>
+                    <div>
+                        <h3 style="font-size: 1.5rem; color: #111827; margin: 0;">本地化品牌控制台</h3>
+                        <p style="font-size: 0.875rem; color: #6B7280; margin: 0.25rem 0 0 0;">极简配置，分钟级生成地道专家级AI客服</p>
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                    <div style="padding: 1.5rem; background: #FFFFFF; border: 1px solid rgba(229, 231, 235, 0.5); border-radius: 0.75rem; display: flex; justify-content: space-between; align-items: center; height: 76px;">
+                        <div>
+                            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.25rem;">品牌LOGO风格</div>
+                            <div style="font-size: 1rem; color: #111827; font-weight: 500;">商务专业 (Expert)</div>
+                        </div>
+                        <svg width="20" height="20" fill="none" stroke="#6B7280" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div style="padding: 1.5rem; background: #FFFFFF; border: 1px solid rgba(229, 231, 235, 0.5); border-radius: 0.75rem; display: flex; justify-content: space-between; align-items: center; height: 76px;">
+                        <div>
+                            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.25rem;">工作时区 & 时间</div>
+                            <div style="font-size: 1rem; color: #111827; font-weight: 500;">全球 24/7 全天候</div>
+                        </div>
+                        <svg width="20" height="20" fill="none" stroke="#6B7280" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div style="padding: 1.5rem; background: #FFFFFF; border: 1px solid rgba(229, 231, 235, 0.5); border-radius: 0.75rem; display: flex; justify-content: space-between; align-items: center; height: 76px;">
+                        <div>
+                            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.25rem;">主要接待语种</div>
+                            <div style="font-size: 1rem; color: #111827; font-weight: 500;">全球全语种 (100+)</div>
+                        </div>
+                        <svg width="20" height="20" fill="none" stroke="#6B7280" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                    <div style="padding: 1.5rem; background: #FFFFFF; border: 1px solid rgba(229, 231, 235, 0.5); border-radius: 0.75rem; display: flex; justify-content: space-between; align-items: center; height: 76px;">
+                        <div>
+                            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.25rem;">行业知识库</div>
+                            <div style="font-size: 1rem; color: #111827; font-weight: 500;">跨境电商 </div>
+                        </div>
+                        <svg width="20" height="20" fill="none" stroke="#6B7280" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </div>
+                </div>
+                <div style="padding: 1.5rem; background: #FFFFFF; border: 1px solid rgba(229, 231, 235, 0.5); border-radius: 0.75rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; height: 76px;">
+                    <div>
+                        <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.25rem;">决策引擎 (BASE LLM)</div>
+                        <div style="font-size: 1rem; color: #111827; font-weight: 500;">GlobalLink Pro (自研出海增强模型)</div>
+                    </div>
+                    <svg width="20" height="20" fill="none" stroke="#6B7280" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </div>
+                <button style="padding: 0.75rem 2rem; background: #fd394c; color: #ffffff; border: none; border-radius: 0.75rem; font-size: 1rem; font-weight: 500; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                    立即定制我的专属机器人
+                </button>
+            </div>
+            <div style="background: #FFFFFF; border-radius: 1rem; padding: 0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05); overflow: hidden;">
+                <div style="background: #111827; padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 2.5rem; height: 2.5rem; background: #3B82F6; display: flex; align-items: center; justify-content: center; border-radius: 0.5rem; color: #FFFFFF;">
+                        <svg t="1776755782953" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15590" width="28" height="28">
+                         <path d="M574.464 159.744c0 15.701333-6.869333 29.824-17.792 39.552v66.56h177.792c28.288 0 55.424 11.221333 75.434667 31.146667 20.010667 19.882667 31.232 46.890667 31.232 75.050666v353.792c0 28.16-11.221333 55.168-31.232 75.093334a106.922667 106.922667 0 0 1-75.434667 31.061333h-426.666667a106.922667 106.922667 0 0 1-75.434666-31.104 105.856 105.856 0 0 1-31.232-75.050667V372.053333c0-28.16 11.221333-55.168 31.232-75.093333a106.922667 106.922667 0 0 1 75.434666-31.061333h177.749334V199.253333a53.034667 53.034667 0 0 1-6.826667-71.765333 53.290667 53.290667 0 0 1 46.506667-20.693333 53.504 53.504 0 0 1 42.752 27.562666c4.266667 7.765333 6.485333 16.469333 6.485333 25.344z m-480 283.050667H165.546667v212.309333H94.464v-212.309333z m853.333333 0h-71.125333v212.309333h71.125333v-212.309333z m-533.333333 159.232c14.122667 0 27.733333-5.589333 37.717333-15.573334a52.906667 52.906667 0 0 0 0-75.050666 53.461333 53.461333 0 0 0-75.434666 0 52.906667 52.906667 0 0 0 37.717333 90.624z m266.666667-53.077334c0-14.08-5.632-27.562667-15.616-37.546666a53.461333 53.461333 0 0 0-75.434667 0 52.949333 52.949333 0 0 0 37.717333 90.624c14.122667 0 27.733333-5.589333 37.717334-15.573334a52.906667 52.906667 0 0 0 15.616-37.546666z" fill="currentColor" opacity=".7" p-id="15591"></path>
+                     </svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 1rem; color: #FFFFFF; font-weight: 500;">GlobalLink Agent</div>
+                        <div style="font-size: 0.75rem; color: #9CA3AF; display: flex; align-items: center; gap: 0.5rem;">
+                            <div style="width: 0.5rem; height: 0.5rem; background: #10B981; border-radius: 50%;"></div>
+                            <span>ACTIVE NOW</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 1.5rem; height: 438px; overflow-y: auto; width: 458px; scrollbar-width: thin; scrollbar-color: #E5E7EB #F3F4F6;">
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="background: #F3F4F6; border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.5rem;">
+                            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.5rem;">Agent:</div>
+                            <div style="font-size: 0.875rem; color: #111827; line-height: 1.5;">
+                                Hello! I'm your localization expert. I see you're connecting from Dubai. How can I assist with your order today?
+                                <img src="https://flagcdn.com/w20/ae.png" alt="UAE Flag" style="width: 1.25rem; height: auto; vertical-align: middle; margin-left: 0.25rem;">
+                            </div>
+                            <div style="height: 1px; background: #E5E7EB; margin: 0.5rem 0;"></div>
+                            <div style="font-size: 0.75rem; color: #6B7280; line-height: 1.5;">
+                                你好！我是你的本地化专家。我看到你从迪拜连接。我今天可以如何协助处理你的订单？
+                            </div>
+                        </div>
+                        <div style="background: #3B82F6; border-radius: 0.5rem; padding: 1rem; margin-left: 2rem;">
+                            <div style="font-size: 0.875rem; color: #FFFFFF; line-height: 1.5;">
+                                I need to change my delivery address to the Business Bay area.
+                            </div>
+                            <div style="height: 1px; background: rgba(255, 255, 255, 0.2); margin: 0.5rem 0;"></div>
+                            <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.8); line-height: 1.5;">
+                                我需要将我的送货地址更改为Business Bay地区。
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <div style="background: #F3F4F6; border-radius: 0.5rem; padding: 1rem;">
+                            <div style="font-size: 0.75rem; color: #6B7280; margin-bottom: 0.5rem;">Agent:</div>
+                            <div style="font-size: 0.875rem; color: #111827; line-height: 1.5;">
+                                No problem at all! I've updated your coordinates for the Business Bay delivery. Expect a confirmation email shortly. Is there anything else?
+                                <svg width="16" height="16" fill="#F59E0B" viewBox="0 0 24 24" style="vertical-align: middle; margin-left: 0.25rem;">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9v-2h2v2zm0-4H9V8h2v4zm4 4h-2v-2h2v2zm0-4h-2V8h2v4z"></path>
+                                </svg>
+                            </div>
+                            <div style="height: 1px; background: #E5E7EB; margin: 0.5rem 0;"></div>
+                            <div style="font-size: 0.75rem; color: #6B7280; line-height: 1.5;">
+                                完全没问题！我已经更新了你在Business Bay地区的送货坐标。请期待很快收到确认电子邮件。还有其他需要帮助的吗？
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 1rem; border-top: 1px solid #E5E7EB; display: flex; align-items: center; gap: 1rem; background: #FFFFFF;">
+                    <input type="text" placeholder="Type your message..." style="flex: 1; padding: 1rem; border: none; border-radius: 0.75rem; font-size: 0.875rem; background: #F3F4F6;">
+                    <button style="width: 3rem; height: 3rem; background: #111827; color: #FFFFFF; border: none; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);">
+                        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M13 7h-2v4H7v2h4v4h2v-4h4v-2h-4V7z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="落地能力" class="section-py bg-white">
+        <div class="container" style="text-align: center; margin-bottom: 5rem;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">全球化客服系统 一套配置快速复制上线</h2>
+            <p style="color: var(--text-sub); font-size: 1.125rem;">标准 SaaS 产品可快速上线，助力企业业务在全球范围内迅速扩张。</p>
+        </div>
+        <div class="container" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem;">
+            <div class="magazine-card" style="padding: 20px; display: flex; gap: 2rem; align-items: flex-start; transition: all 0.3s ease; height: 200px;">
+                <div style="flex: 1;">
+                    <h4 style="font-size: 24px; margin-bottom: 1rem; margin-top: 20px; margin-left: 20px;">开通即用，无需本地部署</h4>
+                    <p style="color: var(--text-sub); font-size: 15px; margin-top: 20px; margin-left: 20px;">SaaS 模式，开通账号即可使用。一套配置同步全球站点，一周多国上线。</p>
+                </div>
+                <div style="width: 160px; height: 160px; background: #f1f5f9; border-radius: 0.75rem; overflow: hidden;">
+                    <img src="img/2.png" alt="开通即用" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+            <div class="magazine-card" style="padding: 20px; display: flex; gap: 2rem; align-items: flex-start; transition: all 0.3s ease; height: 200px;">
+                <div style="flex: 1;">
+                    <h4 style="font-size: 24px; margin-bottom: 1rem; margin-top: 20px; margin-left: 20px;">全球服务网络，支持数据本地化</h4>
+                    <p style="color: var(--text-sub); font-size: 15px; margin-top: 20px; margin-left: 20px;">全球核心区域部署节点，本地化低延迟接入，确保页面和消息秒开，支持数据按需存储，满足数据主权要求。</p>
+                </div>
+                <div style="width: 160px; height: 160px; background: #f1f5f9; border-radius: 0.75rem; overflow: hidden;">
+                    <img src="img/3.png" alt="全球服务网络" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+            <div class="magazine-card" style="padding: 20px; display: flex; gap: 2rem; align-items: flex-start; transition: all 0.3s ease; height: 200px;">
+                <div style="flex: 1;">
+                    <h4 style="font-size: 24px; margin-bottom: 1rem; margin-top: 20px; margin-left: 20px;">海外通信资源深度集成</h4>
+                    <p style="color: var(--text-sub); font-size: 15px; margin-top: 20px; margin-left: 20px;">全球本地化号码接入，覆盖225+国家线路资源，提供VOIP网络电话，有网络即可全球通话，节省通信费用。</p>
+                </div>
+                <div style="width: 160px; height: 160px; background: #f1f5f9; border-radius: 0.75rem; overflow: hidden;">
+                    <img src="img/4.png" alt="海外通信资源" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+            <div class="magazine-card" style="padding: 20px; display: flex; gap: 2rem; align-items: flex-start; transition: all 0.3s ease;">
+                <div style="flex: 1;">
+                    <h4 style="font-size: 24px; margin-bottom: 1rem; margin-top: 20px; margin-left: 20px;">出海IM 办公平台深度融合</h4>
+                    <p style="color: var(--text-sub); font-size: 15px; margin-top: 20px; margin-left: 20px;">与 Lark (飞书海外版) 及 WeCom 深度对接，客服在对话中直接发起工单，内部团队在 IM 中即时响应，让每一个客户诉求都能得到闭环解决。</p>
+                </div>
+                <div style="width: 160px; height: 160px; background: #f1f5f9; border-radius: 0.75rem; overflow: hidden;">
+                    <img src="img/5.png" alt="出海IM 办公平台" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="合规安全" class="section-py" style="background: #0F172A; padding-top: 0; padding-bottom: 0;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 4rem 2rem;">
+            <div style="margin-bottom: 4rem;">
+                <h2 style="font-size: 3rem; margin: 1.5rem 0; color: #FFFFFF;">安全合规的全球化服务底座</h2>
+                <p style="font-size: 1.125rem; color: #94A3B8; line-height: 1.8;">
+                    护航企业无忧出海，全球主流安全合规认证，为企业出海提供合规的技术支撑，助您专注业务拓展。
+                </p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;">
+                <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid #24477f; border-radius: 0.75rem; padding: 2rem; transition: all 0.3s ease;">
+                    <div style="width: 3.5rem; height: 3.5rem; background: rgba(59, 130, 246, 0.1); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; color: var(--primary);">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: #FFFFFF;">全球数据合规</h3>
+                    <p style="font-size: 0.875rem; color: #94A3B8; line-height: 1.6;">
+                        确保企业出海展业符合当地数据保护准则（如GDPR、CCPA等）。
+                    </p>
+                </div>
+                <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid #156534; border-radius: 0.75rem; padding: 2rem; transition: all 0.3s ease;">
+                    <div style="width: 3.5rem; height: 3.5rem; background: rgba(34, 197, 94, 0.1); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; color: var(--accent-green);">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: #FFFFFF;">全链路数据加密</h3>
+                    <p style="font-size: 0.875rem; color: #94A3B8; line-height: 1.6;">
+                        从接入、传输到存储，客户沟通记录及敏感业务数据均经过严格加密处理。
+                    </p>
+                </div>
+                <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid #7d431c; border-radius: 0.75rem; padding: 2rem; transition: all 0.3s ease;">
+                    <div style="width: 3.5rem; height: 3.5rem; background: rgba(249, 115, 22, 0.1); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; color: var(--accent-orange);">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: #FFFFFF;">隐私信息脱敏</h3>
+                    <p style="font-size: 0.875rem; color: #94A3B8; line-height: 1.6;">
+                        智能识别并针对关键隐私信息（邮箱、手机号等）设置脱敏，全面保护用户信息。
+                    </p>
+                </div>
+                <div style="background: rgba(30, 41, 59, 0.5); border: 1px solid #513592; border-radius: 0.75rem; padding: 2rem; transition: all 0.3s ease;">
+                    <div style="width: 3.5rem; height: 3.5rem; background: rgba(139, 92, 246, 0.1); border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; color: #8B5CF6;">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h12M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 style="font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; color: #FFFFFF;">统一权限管控</h3>
+                    <p style="font-size: 0.875rem; color: #94A3B8; line-height: 1.6;">
+                        通过总部管理后台，合规统一管控全球各地域站点的客服权限，规避内部管理风险。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="客户案例" class="section-py" style="background: #F1F5F9;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 4rem;">
+                <h2 style="font-size: 2.5rem; margin-bottom: 1rem;">出海标杆案例</h2>
+                <p style="color: var(--text-sub); font-size: 1.125rem;">他们正在用这套系统支撑全球业务。</p>
+            </div>
+
+            <div id="case-study-container">
+                <!-- Slides will be injected by JS -->
+                <div id="slides-wrapper"></div>
+                
+                <button class="carousel-btn carousel-prev" id="prev-btn">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <button class="carousel-btn carousel-next" id="next-btn">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"></path></svg>
+                </button>
+
+                <div class="dots" id="pagination-dots"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-py" style="text-align: center; background: url('img/2.png') no-repeat center center; background-size: cover; border-top: 1px solid var(--border); height: 240px; padding-top: 0px; padding-bottom: 0px;">
+        <div class="container" style="max-width: 48rem; height: 115px; margin: 59px auto 0; text-align: center;">
+            <h2 class="magazine-title" style="margin-bottom: 27px; color: #ffffff; font-size: 30px; margin-top: 27px;">一套全渠道出海客服系统，支撑你的全球业务增长</h2>
+            <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn btn-primary" style="height: 46px; padding: 12px 26px; font-size: 15px; color: #ff0000; background: #ffffff;">获取出海客服方案书</a>
+                <a href="#" class="btn btn-outline" style="height: 46px; padding: 12px 35px; color: #ffffff; border: 2px solid #ffffff;">预约演示</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="logo">GLOBAL<span>CX</span></div>
+            <div style="display: flex; gap: 2.5rem; font-size: 0.6875rem; font-weight: bold; text-transform: uppercase; color: var(--text-sub);">
+                <a href="#" style="color: inherit; text-decoration: none;">Privacy</a>
+                <a href="#" style="color: inherit; text-decoration: none;">Terms</a>
+                <a href="#" style="color: inherit; text-decoration: none;">Support</a>
+            </div>
+            <div style="font-size: 0.6875rem; color: var(--text-sub); font-weight: 500;">
+                © 2026 GlobalLink Technology.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Case Studies Data
+        const CASE_STUDIES = [
+            {
+                company: "南京鹤梦",
+                logo: "Grus Home",
+                industry: "智慧家居",
+                title: "南京鹤梦：降低出海服务成本",
+                description: "将鹤梦覆盖全球200+国家的跨国海量咨询交由大模型客服机器人优先接待，实现约90%的海外用户自主服务；坐席侧配合多语言自动翻译，让国内团队轻松兼顾全球业务，大幅降低出海服务成本。",
+                metrics: [
+                    { label: "AI自主服务率", value: "90%" },
+                    { label: "有效解决率", value: "75%" }
+                ],
+                image: "https://picsum.photos/seed/grushome/800/600"
+            },
+            {
+                company: "蜜雪冰城",
+                logo: "MIXUE",
+                industry: "茶饮连锁 / 全球加盟",
+                title: "蜜雪冰城：一套系统支撑全球业务",
+                description: "支撑全球11个国家、4800+家门店的加盟及售后服务统一管理。通过通话渠道+英文版微工单闭环，深度对接Lark强化总部管控，将响应时间从2小时大幅缩短至5分钟。",
+                metrics: [
+                    { label: "响应时间从2h降至", value: "5min" },
+                    { label: "人力成本降低", value: "40%" }
+                ],
+                image: "https://picsum.photos/seed/mixue/800/600"
+            },
+            {
+                company: "隆基绿能",
+                logo: "LONGi",
+                industry: "新能源 / 光伏产业",
+                title: "隆基绿能：全球化跨语言高效支撑",
+                description: "为全球40余个国家提供全场景技术支持，集成日本、印尼等本地通话线路。通过表单前置录入关键信息并配合语音+在线多渠道交互，显著提升海外业务的跨语言支撑效率。",
+                metrics: [
+                    { label: "海外业务占比", value: "48.1%" },
+                    { label: "沟通效率提升", value: "55%" }
+                ],
+                image: "https://picsum.photos/seed/longi/800/600"
+            },
+            {
+                company: "商米科技",
+                logo: "SUNMI",
+                industry: "智能硬件 / IoT设备",
+                title: "商米科技：200国合作伙伴智能分配",
+                description: "为全球200个国家的2.7W+合作伙伴提供7*24小时服务。支持访客端皮肤自定义及智能时区分配，通过全球昼夜轮班与海外技能组自动分流，确保全球伙伴诉求即时响应。",
+                metrics: [
+                    { label: "合作伙伴数", value: "2.7W+" },
+                    { label: "服务覆盖", value: "200国" }
+                ],
+                image: "https://picsum.photos/seed/sunmi/800/600"
+            },
+            {
+                company: "比亚迪汽车",
+                logo: "BYD",
+                industry: "新能源汽车 / 全产业链",
+                title: "比亚迪汽车：全渠道维保高效闭环",
+                description: "在96个国家和地区提供试驾预约及售后维保服务。利用多语种线路与AI Agent意图识别，实现全渠道咨询的前置表单处理与复杂问题闭环流转，支撑海外销量持续增长。",
+                metrics: [
+                    { label: "海外销量增长", value: "71.8%" },
+                    { label: "服务闭环率", value: "88%" }
+                ],
+                image: "https://picsum.photos/seed/byd/800/600"
+            }
+        ];
+
+        let activeCase = 0;
+        const wrapper = document.getElementById('slides-wrapper');
+        const dotsContainer = document.getElementById('pagination-dots');
+
+        function renderCaseStudy() {
+            wrapper.innerHTML = '';
+            dotsContainer.innerHTML = '';
+
+            CASE_STUDIES.forEach((study, index) => {
+                const slide = document.createElement('div');
+                slide.className = `case-slide ${index === activeCase ? 'active' : ''}`;
+                slide.innerHTML = `
+                    <div class="case-grid">
+                        <div class="case-info">
+                            <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;">
+                                <div style="width: 127px; height: 40px; border-radius: 0.5rem; overflow: hidden;">
+                        <img src="img/lppz.png" alt="Grus Home" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                            </div>
+                            <h3 style="font-size: 1.875rem; margin-bottom: 1.5rem; color: var(--text-main); margin-top: 50px;">${study.title}</h3>
+                            <div style="padding: 0 0 2rem; border-radius: 1.25rem; margin-bottom: 2.5rem; box-sizing: content-box;">
+                        <p style="color: var(--text-sub); font-size: 1.125rem; margin-top: 30px;">${study.description}</p>
+                    </div>
+                            <div class="metrics-grid" style="margin-top: 40px; width: 400px;">
+                                ${study.metrics.map(m => `
+                                    <div style="width: 160px;">
+                                        <div class="metric-value" style="font-style: normal; font-size: 30px; color: #fc354c; width: 160px; line-height: 45px; letter-spacing: 0px; font-weight: 800;">${m.value}</div>
+                                        <div class="metric-label" style="font-size: 15px; margin-top: 5px; width: 160px; letter-spacing: 0px;">${m.label}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="case-image">
+                            <img src="${study.image}" alt="${study.company}">
+                        </div>
+                    </div>
+                `;
+                wrapper.appendChild(slide);
+
+                const dot = document.createElement('div');
+                dot.className = `dot ${index === activeCase ? 'active' : ''}`;
+                dot.style.background = index === activeCase ? '#fc354c' : '#ccc';
+                dot.style.transition = 'all 0.3s ease';
+                dot.onclick = () => { activeCase = index; renderCaseStudy(); };
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        document.getElementById('prev-btn').onclick = () => {
+            activeCase = (activeCase === 0) ? CASE_STUDIES.length - 1 : activeCase - 1;
+            renderCaseStudy();
+        };
+
+        document.getElementById('next-btn').onclick = () => {
+            activeCase = (activeCase === CASE_STUDIES.length - 1) ? 0 : activeCase + 1;
+            renderCaseStudy();
+        };
+
+        renderCaseStudy();
+    </script>
+</body>
+</html>
